@@ -1,0 +1,1527 @@
+swagger: "2.0"
+info:
+  description: "COCCOLEQ"
+  version: "1.0.0"
+  title: "COCCOLEQ"
+  termsOfService: "http://ashiras.xyz/"
+  contact:
+    email: "ashiras@ashiras.xyz"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:9000"
+basePath: "/dummy/api"
+tags:
+- name: "api"
+  description: "coccoleq api"
+schemes:
+- "http"
+paths:
+  /search:
+    post:
+      tags:
+      - "api"
+      summary: "Search"
+      description: "商品検索（カタログ：Solr Index）"
+      operationId: "Search"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "商品検索（カタログ：Solr Index）・リクエスト"
+        required: true
+        schema:
+          $ref: "#/definitions/SearchRequest"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SearchResult"
+        405:
+          description: "Invalid input"
+  /recommend:
+    post:
+      tags:
+      - "api"
+      summary: "Recommend"
+      description: "おすすめ商品"
+      operationId: "Recommend"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/GoodsRecommend"
+        405:
+          description: "Invalid input"
+  /latestPurchase:
+    post:
+      tags:
+      - "api"
+      summary: "latestPurchase"
+      description: "最近購入した商品"
+      operationId: "latestPurchase"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/GoodsLatestPurchase"
+        405:
+          description: "Invalid input"
+  /oftenPurchase:
+    post:
+      tags:
+      - "api"
+      summary: "oftenPurchase"
+      description: "よく購入する商品"
+      operationId: "oftenPurchase"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/GoodsOftenPurchase"
+        405:
+          description: "Invalid input"
+  /detail:
+    post:
+      tags:
+      - "api"
+      summary: "detail"
+      description: "商品詳細情報取得"
+      operationId: "detail"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "商品詳細情報取得・リクエスト"
+        required: true
+        schema:
+          $ref: "#/definitions/DetailRequest"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            items:
+              $ref: "#/definitions/Detail"
+        405:
+          description: "Invalid input"
+  /searchHistory:
+    post:
+      tags:
+      - "api"
+      summary: "searchHistory"
+      description: "購買履歴検索（Solr Tranz Index）"
+      operationId: "searchHistory"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "購買履歴検索（Solr Tranz Index）・リクエスト"
+        required: true
+        schema:
+          $ref: "#/definitions/HistoryRequest"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            items:
+              $ref: "#/definitions/History"
+        405:
+          description: "Invalid input"
+  /searchBG:
+    post:
+      tags:
+      - "api"
+      summary: "searchBG"
+      description: "バックグランドサーチ-横断検索"
+      operationId: "searchBG"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "バックグランドサーチ-横断検索・リクエスト"
+        required: true
+        schema:
+          $ref: "#/definitions/BackGroundRequest"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            items:
+              $ref: "#/definitions/BackGroundSearch"
+        405:
+          description: "Invalid input"
+  /getSearchBGResult:
+    post:
+      tags:
+      - "api"
+      summary: "getSearchBGResult"
+      description: "バックグランドサーチ-結果取得"
+      operationId: "getSearchBGResult"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            items:
+              $ref: "#/definitions/BackGroundSearch"
+        405:
+          description: "Invalid input"
+  /detailBG:
+    post:
+      tags:
+      - "api"
+      summary: "detailBG"
+      description: "バックグランドサーチ-商品詳細"
+      operationId: "detailBG"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "バックグランドサーチ-商品詳細・リクエスト"
+        required: true
+        schema:
+          $ref: "#/definitions/DetailRequest"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            items:
+              $ref: "#/definitions/Detail"
+        405:
+          description: "Invalid input"
+  /favoriteSearch:
+    post:
+      tags:
+      - "api"
+      summary: "favoriteSearch"
+      description: "お気に入り一覧"
+      operationId: "favoriteSearch"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Favorite"
+        405:
+          description: "Invalid input"
+  /favoriteAdd:
+    post:
+      tags:
+      - "api"
+      summary: "favoriteAdd"
+      description: "お気に入り追加"
+      operationId: "favoriteAdd"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "お気に入り追加・リクエスト"
+        required: true
+        schema:
+          $ref: "#/definitions/FavoriteRequest"
+      responses:
+        405:
+          description: "Invalid input"
+  /favoriteDel:
+    post:
+      tags:
+      - "api"
+      summary: "favoriteDel"
+      description: "お気に入り削除"
+      operationId: "favoriteDel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "お気に入り削除・リクエスト"
+        required: true
+        schema:
+          $ref: "#/definitions/FavoriteRequest"
+      responses:
+        405:
+          description: "Invalid input"
+  /getFileContent:
+    post:
+      tags:
+      - "api"
+      summary: "getFileContent"
+      description: "お知らせ"
+      operationId: "getFileContent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Infomation"
+        405:
+          description: "Invalid input"
+  /campaign:
+    post:
+      tags:
+      - "api"
+      summary: "campaign"
+      description: "キャンペーン/広告"
+      operationId: "campaign"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Campaign"
+        405:
+          description: "Invalid input"
+definitions:
+  GoodsRecommend:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+  GoodsLatestPurchase:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      lastestPurchaseDate:
+        type: "string"
+        format: "date"
+        description: "最終購入日"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+  GoodsOftenPurchase:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      countPurchase:
+        type: "integer"
+        format: "int32"
+        description: "[購入回数]TR_ローカルのみトランザクションＤから取得"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+  Campaign:
+    type: "object"
+    properties:
+      campaignImageURL:
+        type: "string"
+        description: "キャンペーン画像URL"
+      campaignURL:
+        type: "string"
+        description: "キャンペーンURL"
+  Infomation:
+    type: "object"
+    properties:
+      title:
+        type: "string"
+        description: "タイトル"
+      effectiveDate:
+        type: "string"
+        format: "date"
+        description: "日付"
+      contents:
+        type: "string"
+        description: "内容"
+  SearchRequest:
+    type: "object"
+    properties:
+      keyword:
+        type: "string"
+        description: "キーワード"
+      start:
+        type: "integer"
+        format: "int32"
+        description: "キーワード"
+      rows:
+        type: "integer"
+        format: "int32"
+        description: "キーワード"
+      sort:
+        type: "integer"
+        format: "int32"
+        description: "キーワード"
+      facetMakerList:
+        type: "array"
+        items:
+          type: string
+        description: "キーワード"
+      facetCategoryList:
+        type: "array"
+        items:
+          type: string
+        description: "キーワード"
+      facetPriceList:
+        type: "array"
+        items:
+          type: string
+        description: "キーワード"
+  SearchResult:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      campainFlg:
+        type: "boolean"
+        description: "キャンペーンフラグ"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      tagName:
+        type: "string"
+        description: "タグ名"
+      goodsInfoFlg1:
+        type: "boolean"
+        description: "[商品情報フラグ1]毒物"
+      goodsInfoFlg2:
+        type: "boolean"
+        description: "[商品情報フラグ2]劇物"
+      goodsInfoFlg3:
+        type: "boolean"
+        description: "[商品情報フラグ3]危険物"
+      goodsInfoFlg4:
+        type: "boolean"
+        description: "[商品情報フラグ4]向精神薬"
+      goodsInfoFlg5:
+        type: "boolean"
+        description: "[商品情報フラグ5]欠番"
+      goodsInfoFlg6:
+        type: "boolean"
+        description: "[商品情報フラグ6]特定麻薬向精神薬原料"
+      goodsInfoFlg7:
+        type: "boolean"
+        description: "[商品情報フラグ7]発ガン性物質、変異性物質"
+      goodsInfoFlg8:
+        type: "boolean"
+        description: "[商品情報フラグ8]欠番"
+      goodsInfoFlg9:
+        type: "boolean"
+        description: "[商品情報フラグ9]化審法"
+      goodsInfoFlg10:
+        type: "boolean"
+        description: "[商品情報フラグ10]ＰＲＴＲ法"
+      goodsInfoFlg11:
+        type: "boolean"
+        description: "[商品情報フラグ11]労働安全衛生法"
+      goodsInfoFlg12:
+        type: "boolean"
+        description: "[商品情報フラグ12]メーカー申請必要製品"
+      goodsInfoFlg13:
+        type: "boolean"
+        description: "[商品情報フラグ13]医薬品(体外診断用医薬品含む）"
+      goodsInfoFlg14:
+        type: "boolean"
+        description: "[商品情報フラグ14]商品情報F14:カルタヘナ法"
+      goodsInfoFlg15:
+        type: "boolean"
+        description: "[商品情報フラグ15]医薬品（毒薬、劇薬）"
+      goodsInfoFlg16:
+        type: "boolean"
+        description: "[商品情報フラグ16]生物由来製品"
+      goodsInfoFlg17:
+        type: "boolean"
+        description: "[商品情報フラグ17]高圧ガス"
+      goodsInfoFlg18:
+        type: "boolean"
+        description: "[商品情報フラグ18]空"
+      goodsInfoFlg19:
+        type: "boolean"
+        description: "[商品情報フラグ19]空"
+      goodsInfoFlg20:
+        type: "boolean"
+        description: "[商品情報フラグ20]保存注意物質"
+      goodsInfoFlg21:
+        type: "boolean"
+        description: "[商品情報フラグ21]特定毒物【毒劇法】"
+      goodsInfoFlg22:
+        type: "boolean"
+        description: "[商品情報フラグ22]特定化学物質（第一種・第二種）【化審法】"
+      goodsInfoFlg23:
+        type: "boolean"
+        description: "[商品情報フラグ23]オゾン層保護法"
+      goodsInfoFlg24:
+        type: "boolean"
+        description: "[商品情報フラグ24]一般用医薬品・要指導医薬品【薬機法】"
+      goodsInfoFlg25:
+        type: "boolean"
+        description: "[商品情報フラグ25]体外診断用医薬品【薬機法】"
+      goodsInfoFlg26:
+        type: "boolean"
+        description: "[商品情報フラグ26]医療機器（クラスⅠ・Ⅱ）【薬機法】"
+      goodsInfoFlg27:
+        type: "boolean"
+        description: "[商品情報フラグ27]特定保守管理医療機器【薬機法】"
+      goodsInfoFlg28:
+        type: "boolean"
+        description: "[商品情報フラグ28]動物用医薬品（体外診断用医薬品含む）【薬機法】"
+      goodsInfoFlg29:
+        type: "boolean"
+        description: "[商品情報フラグ29]動物用医療機器(一般及び管理医療機器)【薬機法】"
+      ecoFlg:
+        type: "boolean"
+        description: "エコマークフラグ"
+      greenFlg:
+        type: "boolean"
+        description: "グリーンマークフラグ"
+      countPurchase:
+        type: "integer"
+        format: "int32"
+        description: "[購入回数]TR_ローカルのみトランザクションＤから取得"
+      lastestPurchaseDate:
+        type: "string"
+        format: "date"
+        description: "最終購入日"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+  BackGroundRequest:
+    type: "object"
+    properties:
+      keyword:
+        type: "string"
+        description: "キーワード"
+  BackGroundSearch:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      campainFlg:
+        type: "boolean"
+        description: "キャンペーンフラグ"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      tagName:
+        type: "string"
+        description: "タグ名"
+      goodsInfoFlg1:
+        type: "boolean"
+        description: "[商品情報フラグ1]毒物"
+      goodsInfoFlg2:
+        type: "boolean"
+        description: "[商品情報フラグ2]劇物"
+      goodsInfoFlg3:
+        type: "boolean"
+        description: "[商品情報フラグ3]危険物"
+      goodsInfoFlg4:
+        type: "boolean"
+        description: "[商品情報フラグ4]向精神薬"
+      goodsInfoFlg5:
+        type: "boolean"
+        description: "[商品情報フラグ5]欠番"
+      goodsInfoFlg6:
+        type: "boolean"
+        description: "[商品情報フラグ6]特定麻薬向精神薬原料"
+      goodsInfoFlg7:
+        type: "boolean"
+        description: "[商品情報フラグ7]発ガン性物質、変異性物質"
+      goodsInfoFlg8:
+        type: "boolean"
+        description: "[商品情報フラグ8]欠番"
+      goodsInfoFlg9:
+        type: "boolean"
+        description: "[商品情報フラグ9]化審法"
+      goodsInfoFlg10:
+        type: "boolean"
+        description: "[商品情報フラグ10]ＰＲＴＲ法"
+      goodsInfoFlg11:
+        type: "boolean"
+        description: "[商品情報フラグ11]労働安全衛生法"
+      goodsInfoFlg12:
+        type: "boolean"
+        description: "[商品情報フラグ12]メーカー申請必要製品"
+      goodsInfoFlg13:
+        type: "boolean"
+        description: "[商品情報フラグ13]医薬品(体外診断用医薬品含む）"
+      goodsInfoFlg14:
+        type: "boolean"
+        description: "[商品情報フラグ14]商品情報F14:カルタヘナ法"
+      goodsInfoFlg15:
+        type: "boolean"
+        description: "[商品情報フラグ15]医薬品（毒薬、劇薬）"
+      goodsInfoFlg16:
+        type: "boolean"
+        description: "[商品情報フラグ16]生物由来製品"
+      goodsInfoFlg17:
+        type: "boolean"
+        description: "[商品情報フラグ17]高圧ガス"
+      goodsInfoFlg18:
+        type: "boolean"
+        description: "[商品情報フラグ18]空"
+      goodsInfoFlg19:
+        type: "boolean"
+        description: "[商品情報フラグ19]空"
+      goodsInfoFlg20:
+        type: "boolean"
+        description: "[商品情報フラグ20]保存注意物質"
+      goodsInfoFlg21:
+        type: "boolean"
+        description: "[商品情報フラグ21]特定毒物【毒劇法】"
+      goodsInfoFlg22:
+        type: "boolean"
+        description: "[商品情報フラグ22]特定化学物質（第一種・第二種）【化審法】"
+      goodsInfoFlg23:
+        type: "boolean"
+        description: "[商品情報フラグ23]オゾン層保護法"
+      goodsInfoFlg24:
+        type: "boolean"
+        description: "[商品情報フラグ24]一般用医薬品・要指導医薬品【薬機法】"
+      goodsInfoFlg25:
+        type: "boolean"
+        description: "[商品情報フラグ25]体外診断用医薬品【薬機法】"
+      goodsInfoFlg26:
+        type: "boolean"
+        description: "[商品情報フラグ26]医療機器（クラスⅠ・Ⅱ）【薬機法】"
+      goodsInfoFlg27:
+        type: "boolean"
+        description: "[商品情報フラグ27]特定保守管理医療機器【薬機法】"
+      goodsInfoFlg28:
+        type: "boolean"
+        description: "[商品情報フラグ28]動物用医薬品（体外診断用医薬品含む）【薬機法】"
+      goodsInfoFlg29:
+        type: "boolean"
+        description: "[商品情報フラグ29]動物用医療機器(一般及び管理医療機器)【薬機法】"
+      ecoFlg:
+        type: "boolean"
+        description: "エコマークフラグ"
+      greenFlg:
+        type: "boolean"
+        description: "グリーンマークフラグ"
+      countPurchase:
+        type: "integer"
+        format: "int32"
+        description: "[購入回数]TR_ローカルのみトランザクションＤから取得"
+      lastestPurchaseDate:
+        type: "string"
+        format: "date"
+        description: "最終購入日"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+  DetailRequest:
+    type: "object"
+    properties:
+      type:
+        type: "integer"
+        format: "int32"
+        description: "インデックスタイプF"
+      productId:
+        type: "string"
+        description: "インデックス管理NO"
+  Detail:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "boolean"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      campainFlg:
+        type: "boolean"
+        description: "キャンペーンフラグ"
+      cpStartDate:
+        type: "string"
+        format: "date"
+        description: "キャンペーン開始日"
+      cpEndDate:
+        type: "string"
+        format: "date"
+        description: "キャンペーン終了日"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      tagName:
+        type: "string"
+        description: "タグ名"
+      supplyCompanyCode:
+        type: "string"
+        description: "サプライヤ企業コード"
+      supplyBranchCode:
+        type: "string"
+        description: "サプライヤ事業所コード"
+      supplyDivisionCode:
+        type: "string"
+        description: "サプライヤ部門コード"
+      saleUnitName:
+        type: "string"
+        description: "販売単位"
+      enterNumberName:
+        type: "string"
+        description: "入数単位"
+      enterNumber:
+        type: "integer"
+        format: "int32"
+        description: "[入数数量]例：箱(100枚入) ※最後の入りは必須"
+      standardPrice:
+        type: "integer"
+        format: "int32"
+        description: "定価"
+      buyerBuyingPrice:
+        type: "integer"
+        format: "int32"
+        description: "購入時価格"
+      deliveryDay:
+        type: "string"
+        description: "納期情報"
+      goodsInfoFlg1:
+        type: "boolean"
+        description: "[商品情報フラグ1]毒物"
+      goodsInfoFlg2:
+        type: "boolean"
+        description: "[商品情報フラグ2]劇物"
+      goodsInfoFlg3:
+        type: "boolean"
+        description: "[商品情報フラグ3]危険物"
+      goodsInfoFlg4:
+        type: "boolean"
+        description: "[商品情報フラグ4]向精神薬"
+      goodsInfoFlg5:
+        type: "boolean"
+        description: "[商品情報フラグ5]欠番"
+      goodsInfoFlg6:
+        type: "boolean"
+        description: "[商品情報フラグ6]特定麻薬向精神薬原料"
+      goodsInfoFlg7:
+        type: "boolean"
+        description: "[商品情報フラグ7]発ガン性物質、変異性物質"
+      goodsInfoFlg8:
+        type: "boolean"
+        description: "[商品情報フラグ8]欠番"
+      goodsInfoFlg9:
+        type: "boolean"
+        description: "[商品情報フラグ9]化審法"
+      goodsInfoFlg10:
+        type: "boolean"
+        description: "[商品情報フラグ10]ＰＲＴＲ法"
+      goodsInfoFlg11:
+        type: "boolean"
+        description: "[商品情報フラグ11]労働安全衛生法"
+      goodsInfoFlg12:
+        type: "boolean"
+        description: "[商品情報フラグ12]メーカー申請必要製品"
+      goodsInfoFlg13:
+        type: "boolean"
+        description: "[商品情報フラグ13]医薬品(体外診断用医薬品含む）"
+      goodsInfoFlg14:
+        type: "boolean"
+        description: "[商品情報フラグ14]商品情報F14:カルタヘナ法"
+      goodsInfoFlg15:
+        type: "boolean"
+        description: "[商品情報フラグ15]医薬品（毒薬、劇薬）"
+      goodsInfoFlg16:
+        type: "boolean"
+        description: "[商品情報フラグ16]生物由来製品"
+      goodsInfoFlg17:
+        type: "boolean"
+        description: "[商品情報フラグ17]高圧ガス"
+      goodsInfoFlg18:
+        type: "boolean"
+        description: "[商品情報フラグ18]空"
+      goodsInfoFlg19:
+        type: "boolean"
+        description: "[商品情報フラグ19]空"
+      goodsInfoFlg20:
+        type: "boolean"
+        description: "[商品情報フラグ20]保存注意物質"
+      goodsInfoFlg21:
+        type: "boolean"
+        description: "[商品情報フラグ21]特定毒物【毒劇法】"
+      goodsInfoFlg22:
+        type: "boolean"
+        description: "[商品情報フラグ22]特定化学物質（第一種・第二種）【化審法】"
+      goodsInfoFlg23:
+        type: "boolean"
+        description: "[商品情報フラグ23]オゾン層保護法"
+      goodsInfoFlg24:
+        type: "boolean"
+        description: "[商品情報フラグ24]一般用医薬品・要指導医薬品【薬機法】"
+      goodsInfoFlg25:
+        type: "boolean"
+        description: "[商品情報フラグ25]体外診断用医薬品【薬機法】"
+      goodsInfoFlg26:
+        type: "boolean"
+        description: "[商品情報フラグ26]医療機器（クラスⅠ・Ⅱ）【薬機法】"
+      goodsInfoFlg27:
+        type: "boolean"
+        description: "[商品情報フラグ27]特定保守管理医療機器【薬機法】"
+      goodsInfoFlg28:
+        type: "boolean"
+        description: "[商品情報フラグ28]動物用医薬品（体外診断用医薬品含む）【薬機法】"
+      goodsInfoFlg29:
+        type: "boolean"
+        description: "[商品情報フラグ29]動物用医療機器(一般及び管理医療機器)【薬機法】"
+      ecoFlg:
+        type: "boolean"
+        description: "エコマークフラグ"
+      greenFlg:
+        type: "boolean"
+        description: "グリーンマークフラグ"
+      countPurchase:
+        type: "integer"
+        description: "[購入回数]TR_ローカルのみトランザクションＤから取得"
+      lastestPurchaseDate:
+        type: "string"
+        format: "date"
+        description: "最終購入日"
+      sendorPrice:
+        type: "string"
+        format: "date"
+        description: "提供価格"
+      itemInfo1Title:
+        type: "string"
+        description: "商品付帯情報_タイトル1"
+      itemInfo1:
+        type: "string"
+        description: "商品付帯情報1"
+      itemInfo2Title:
+        type: "string"
+        description: "商品付帯情報_タイトル2"
+      itemInfo2:
+        type: "string"
+        description: "商品付帯情報2"
+      itemInfo3Title:
+        type: "string"
+        description: "商品付帯情報_タイトル3"
+      itemInfo3:
+        type: "string"
+        description: "商品付帯情報3"
+      itemInfo4Title:
+        type: "string"
+        description: "商品付帯情報_タイトル4"
+      itemInfo4:
+        type: "string"
+        description: "商品付帯情報4"
+      itemInfo5Title:
+        type: "string"
+        description: "商品付帯情報_タイトル5"
+      itemInfo5:
+        type: "string"
+        description: "商品付帯情報5"
+      itemInfo6Title:
+        type: "string"
+        description: "商品付帯情報_タイトル6"
+      itemInfo6:
+        type: "string"
+        description: "商品付帯情報6"
+      itemInfo7Title:
+        type: "string"
+        description: "商品付帯情報_タイトル7"
+      itemInfo7:
+        type: "string"
+        description: "商品付帯情報7"
+      itemInfo8Title:
+        type: "string"
+        description: "商品付帯情報_タイトル8"
+      itemInfo8:
+        type: "string"
+        description: "商品付帯情報8"
+      itemInfo9Title:
+        type: "string"
+        description: "商品付帯情報_タイトル9"
+      itemInfo9:
+        type: "string"
+        description: "商品付帯情報9"
+      itemInfo10Title:
+        type: "string"
+        description: "商品付帯情報_タイトル10"
+      itemInfo10:
+        type: "string"
+        description: "商品付帯情報10"
+      itemInfo11Title:
+        type: "string"
+        description: "商品付帯情報_タイトル11"
+      itemInfo11:
+        type: "string"
+        description: "商品付帯情報11"
+      itemInfo12Title:
+        type: "string"
+        description: "商品付帯情報_タイトル12"
+      itemInfo12:
+        type: "string"
+        description: "商品付帯情報12"
+  GoodsChecked:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      countPurchase:
+        type: "integer"
+        format: "int32"
+        description: "[購入回数]TR_ローカルのみトランザクションＤから取得"
+      lastestPurchaseDate:
+        type: "string"
+        format: "date"
+        description: "最終購入日"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+  Cart:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      campainFlg:
+        type: "boolean"
+        description: "キャンペーンフラグ"
+      countPurchase:
+        type: "integer"
+        format: "int32"
+        description: "[購入回数]TR_ローカルのみトランザクションＤから取得"
+      lastestPurchaseDate:
+        type: "string"
+        format: "date"
+        description: "最終購入日"
+      tagName:
+        type: "string"
+        description: "タグ名"
+      supplyCompanyCode:
+        type: "string"
+        description: "サプライヤ企業コード"
+      supplyBranchCode:
+        type: "string"
+        description: "サプライヤ事業所コード"
+      supplyDivisionCode:
+        type: "string"
+        description: "サプライヤ部門コード"
+      enterNumberName:
+        type: "string"
+        description: "入数単位"
+      enterNumber:
+        type: "integer"
+        format: "int32"
+        description: "[入数数量]例：箱(100枚入) ※最後の入りは必須"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+      deliveryDay:
+        type: "string"
+        description: "納期情報"
+      goodsInfoFlg1:
+        type: "boolean"
+        description: "[商品情報フラグ1]毒物"
+      goodsInfoFlg2:
+        type: "boolean"
+        description: "[商品情報フラグ2]劇物"
+      goodsInfoFlg3:
+        type: "boolean"
+        description: "[商品情報フラグ3]危険物"
+      goodsInfoFlg4:
+        type: "boolean"
+        description: "[商品情報フラグ4]向精神薬"
+      goodsInfoFlg5:
+        type: "boolean"
+        description: "[商品情報フラグ5]欠番"
+      goodsInfoFlg6:
+        type: "boolean"
+        description: "[商品情報フラグ6]特定麻薬向精神薬原料"
+      goodsInfoFlg7:
+        type: "boolean"
+        description: "[商品情報フラグ7]発ガン性物質、変異性物質"
+      goodsInfoFlg8:
+        type: "boolean"
+        description: "[商品情報フラグ8]欠番"
+      goodsInfoFlg9:
+        type: "boolean"
+        description: "[商品情報フラグ9]化審法"
+      goodsInfoFlg10:
+        type: "boolean"
+        description: "[商品情報フラグ10]ＰＲＴＲ法"
+      goodsInfoFlg11:
+        type: "boolean"
+        description: "[商品情報フラグ11]労働安全衛生法"
+      goodsInfoFlg12:
+        type: "boolean"
+        description: "[商品情報フラグ12]メーカー申請必要製品"
+      goodsInfoFlg13:
+        type: "boolean"
+        description: "[商品情報フラグ13]医薬品(体外診断用医薬品含む）"
+      goodsInfoFlg14:
+        type: "boolean"
+        description: "[商品情報フラグ14]商品情報F14:カルタヘナ法"
+      goodsInfoFlg15:
+        type: "boolean"
+        description: "[商品情報フラグ15]医薬品（毒薬、劇薬）"
+      goodsInfoFlg16:
+        type: "boolean"
+        description: "[商品情報フラグ16]生物由来製品"
+      goodsInfoFlg17:
+        type: "boolean"
+        description: "[商品情報フラグ17]高圧ガス"
+      goodsInfoFlg18:
+        type: "boolean"
+        description: "[商品情報フラグ18]空"
+      goodsInfoFlg19:
+        type: "boolean"
+        description: "[商品情報フラグ19]空"
+      goodsInfoFlg20:
+        type: "boolean"
+        description: "[商品情報フラグ20]保存注意物質"
+      goodsInfoFlg21:
+        type: "boolean"
+        description: "[商品情報フラグ21]特定毒物【毒劇法】"
+      goodsInfoFlg22:
+        type: "boolean"
+        description: "[商品情報フラグ22]特定化学物質（第一種・第二種）【化審法】"
+      goodsInfoFlg23:
+        type: "boolean"
+        description: "[商品情報フラグ23]オゾン層保護法"
+      goodsInfoFlg24:
+        type: "boolean"
+        description: "[商品情報フラグ24]一般用医薬品・要指導医薬品【薬機法】"
+      goodsInfoFlg25:
+        type: "boolean"
+        description: "[商品情報フラグ25]体外診断用医薬品【薬機法】"
+      goodsInfoFlg26:
+        type: "boolean"
+        description: "[商品情報フラグ26]医療機器（クラスⅠ・Ⅱ）【薬機法】"
+      goodsInfoFlg27:
+        type: "boolean"
+        description: "[商品情報フラグ27]特定保守管理医療機器【薬機法】"
+      goodsInfoFlg28:
+        type: "boolean"
+        description: "[商品情報フラグ28]動物用医薬品（体外診断用医薬品含む）【薬機法】"
+      goodsInfoFlg29:
+        type: "boolean"
+        description: "[商品情報フラグ29]動物用医療機器(一般及び管理医療機器)【薬機法】"
+      ecoFlg:
+        type: "boolean"
+        description: "エコマークフラグ"
+      greenFlg:
+        type: "boolean"
+        description: "グリーンマークフラグ"
+      buyAmount:
+        type: "integer"
+        format: "int32"
+        description: "購入数量"
+  FavoriteRequest:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+  Favorite:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      campainFlg:
+        type: "boolean"
+        description: "キャンペーンフラグ"
+      countPurchase:
+        type: "integer"
+        format: "int32"
+        description: "[購入回数]TR_ローカルのみトランザクションＤから取得"
+      lastestPurchaseDate:
+        type: "string"
+        format: "date"
+        description: "最終購入日"
+      tagName:
+        type: "string"
+        description: "タグ名"
+      supplyCompanyCode:
+        type: "string"
+        description: "サプライヤ企業コード"
+      supplyBranchCode:
+        type: "string"
+        description: "サプライヤ事業所コード"
+      supplyDivisionCode:
+        type: "string"
+        description: "サプライヤ部門コード"
+      enterNumberName:
+        type: "string"
+        description: "入数単位"
+      enterNumber:
+        type: "integer"
+        format: "int32"
+        description: "[入数数量]例：箱(100枚入) ※最後の入りは必須"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+      deliveryDay:
+        type: "string"
+        description: "納期情報"
+      goodsInfoFlg1:
+        type: "boolean"
+        description: "[商品情報フラグ1]毒物"
+      goodsInfoFlg2:
+        type: "boolean"
+        description: "[商品情報フラグ2]劇物"
+      goodsInfoFlg3:
+        type: "boolean"
+        description: "[商品情報フラグ3]危険物"
+      goodsInfoFlg4:
+        type: "boolean"
+        description: "[商品情報フラグ4]向精神薬"
+      goodsInfoFlg5:
+        type: "boolean"
+        description: "[商品情報フラグ5]欠番"
+      goodsInfoFlg6:
+        type: "boolean"
+        description: "[商品情報フラグ6]特定麻薬向精神薬原料"
+      goodsInfoFlg7:
+        type: "boolean"
+        description: "[商品情報フラグ7]発ガン性物質、変異性物質"
+      goodsInfoFlg8:
+        type: "boolean"
+        description: "[商品情報フラグ8]欠番"
+      goodsInfoFlg9:
+        type: "boolean"
+        description: "[商品情報フラグ9]化審法"
+      goodsInfoFlg10:
+        type: "boolean"
+        description: "[商品情報フラグ10]ＰＲＴＲ法"
+      goodsInfoFlg11:
+        type: "boolean"
+        description: "[商品情報フラグ11]労働安全衛生法"
+      goodsInfoFlg12:
+        type: "boolean"
+        description: "[商品情報フラグ12]メーカー申請必要製品"
+      goodsInfoFlg13:
+        type: "boolean"
+        description: "[商品情報フラグ13]医薬品(体外診断用医薬品含む）"
+      goodsInfoFlg14:
+        type: "boolean"
+        description: "[商品情報フラグ14]商品情報F14:カルタヘナ法"
+      goodsInfoFlg15:
+        type: "boolean"
+        description: "[商品情報フラグ15]医薬品（毒薬、劇薬）"
+      goodsInfoFlg16:
+        type: "boolean"
+        description: "[商品情報フラグ16]生物由来製品"
+      goodsInfoFlg17:
+        type: "boolean"
+        description: "[商品情報フラグ17]高圧ガス"
+      goodsInfoFlg18:
+        type: "boolean"
+        description: "[商品情報フラグ18]空"
+      goodsInfoFlg19:
+        type: "boolean"
+        description: "[商品情報フラグ19]空"
+      goodsInfoFlg20:
+        type: "boolean"
+        description: "[商品情報フラグ20]保存注意物質"
+      goodsInfoFlg21:
+        type: "boolean"
+        description: "[商品情報フラグ21]特定毒物【毒劇法】"
+      goodsInfoFlg22:
+        type: "boolean"
+        description: "[商品情報フラグ22]特定化学物質（第一種・第二種）【化審法】"
+      goodsInfoFlg23:
+        type: "boolean"
+        description: "[商品情報フラグ23]オゾン層保護法"
+      goodsInfoFlg24:
+        type: "boolean"
+        description: "[商品情報フラグ24]一般用医薬品・要指導医薬品【薬機法】"
+      goodsInfoFlg25:
+        type: "boolean"
+        description: "[商品情報フラグ25]体外診断用医薬品【薬機法】"
+      goodsInfoFlg26:
+        type: "boolean"
+        description: "[商品情報フラグ26]医療機器（クラスⅠ・Ⅱ）【薬機法】"
+      goodsInfoFlg27:
+        type: "boolean"
+        description: "[商品情報フラグ27]特定保守管理医療機器【薬機法】"
+      goodsInfoFlg28:
+        type: "boolean"
+        description: "[商品情報フラグ28]動物用医薬品（体外診断用医薬品含む）【薬機法】"
+      goodsInfoFlg29:
+        type: "boolean"
+        description: "[商品情報フラグ29]動物用医療機器(一般及び管理医療機器)【薬機法】"
+      ecoFlg:
+        type: "boolean"
+        description: "エコマークフラグ"
+      greenFlg:
+        type: "boolean"
+        description: "グリーンマークフラグ"
+  HistoryRequest:
+    type: "object"
+    properties:
+      keyword:
+        type: "string"
+        description: "キーワード"
+      fdate:
+        type: "string"
+        format: "date"
+        description: "検索開始日"
+      tdate:
+        type: "string"
+        format: "date"
+        description: "検索終了日"
+  History:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "[インデックス管理NO]インデックス主キー"
+      ucd:
+        type: "string"
+        description: "[商品ユニークコード]TR_ローカル=商品のUCD値　掲載外=トランザクションの管理用NO　R社=idと同一"
+      indexTypeF:
+        type: "integer"
+        format: "int32"
+        description: "[インデックスタイプF]0：TR_ローカル　1：掲載外　2：R社"
+      goodsImageURL:
+        type: "string"
+        description: "商品画像URL"
+      salesAgency:
+        type: "string"
+        description: "[販売元名]発売元"
+      goodsName:
+        type: "string"
+        description: "商品名"
+      campainFlg:
+        type: "boolean"
+        description: "キャンペーンフラグ"
+      countPurchase:
+        type: "integer"
+        format: "int32"
+        description: "[購入回数]TR_ローカルのみトランザクションＤから取得"
+      lastestPurchaseDate:
+        type: "string"
+        format: "date"
+        description: "最終購入日"
+      tagName:
+        type: "string"
+        description: "タグ名"
+      supplyCompanyCode:
+        type: "string"
+        description: "サプライヤ企業コード"
+      supplyBranchCode:
+        type: "string"
+        description: "サプライヤ事業所コード"
+      supplyDivisionCode:
+        type: "string"
+        description: "サプライヤ部門コード"
+      enterNumberName:
+        type: "string"
+        description: "入数単位"
+      enterNumber:
+        type: "integer"
+        format: "int32"
+        description: "[入数数量]例：箱(100枚入) ※最後の入りは必須"
+      catalog_relationName:
+        type: "string"
+        description: "カタログ連携先名"
+      sendorPrice:
+        type: "integer"
+        format: "int32"
+        description: "提供価格"
+      buyerBuyingPrice:
+        type: "integer"
+        format: "int32"
+        description: "購入時価格"
+      deliveryDay:
+        type: "string"
+        description: "納期情報"
+      goodsInfoFlg1:
+        type: "boolean"
+        description: "[商品情報フラグ1]毒物"
+      goodsInfoFlg2:
+        type: "boolean"
+        description: "[商品情報フラグ2]劇物"
+      goodsInfoFlg3:
+        type: "boolean"
+        description: "[商品情報フラグ3]危険物"
+      goodsInfoFlg4:
+        type: "boolean"
+        description: "[商品情報フラグ4]向精神薬"
+      goodsInfoFlg5:
+        type: "boolean"
+        description: "[商品情報フラグ5]欠番"
+      goodsInfoFlg6:
+        type: "boolean"
+        description: "[商品情報フラグ6]特定麻薬向精神薬原料"
+      goodsInfoFlg7:
+        type: "boolean"
+        description: "[商品情報フラグ7]発ガン性物質、変異性物質"
+      goodsInfoFlg8:
+        type: "boolean"
+        description: "[商品情報フラグ8]欠番"
+      goodsInfoFlg9:
+        type: "boolean"
+        description: "[商品情報フラグ9]化審法"
+      goodsInfoFlg10:
+        type: "boolean"
+        description: "[商品情報フラグ10]ＰＲＴＲ法"
+      goodsInfoFlg11:
+        type: "boolean"
+        description: "[商品情報フラグ11]労働安全衛生法"
+      goodsInfoFlg12:
+        type: "boolean"
+        description: "[商品情報フラグ12]メーカー申請必要製品"
+      goodsInfoFlg13:
+        type: "boolean"
+        description: "[商品情報フラグ13]医薬品(体外診断用医薬品含む）"
+      goodsInfoFlg14:
+        type: "boolean"
+        description: "[商品情報フラグ14]商品情報F14:カルタヘナ法"
+      goodsInfoFlg15:
+        type: "boolean"
+        description: "[商品情報フラグ15]医薬品（毒薬、劇薬）"
+      goodsInfoFlg16:
+        type: "boolean"
+        description: "[商品情報フラグ16]生物由来製品"
+      goodsInfoFlg17:
+        type: "boolean"
+        description: "[商品情報フラグ17]高圧ガス"
+      goodsInfoFlg18:
+        type: "boolean"
+        description: "[商品情報フラグ18]空"
+      goodsInfoFlg19:
+        type: "boolean"
+        description: "[商品情報フラグ19]空"
+      goodsInfoFlg20:
+        type: "boolean"
+        description: "[商品情報フラグ20]保存注意物質"
+      goodsInfoFlg21:
+        type: "boolean"
+        description: "[商品情報フラグ21]特定毒物【毒劇法】"
+      goodsInfoFlg22:
+        type: "boolean"
+        description: "[商品情報フラグ22]特定化学物質（第一種・第二種）【化審法】"
+      goodsInfoFlg23:
+        type: "boolean"
+        description: "[商品情報フラグ23]オゾン層保護法"
+      goodsInfoFlg24:
+        type: "boolean"
+        description: "[商品情報フラグ24]一般用医薬品・要指導医薬品【薬機法】"
+      goodsInfoFlg25:
+        type: "boolean"
+        description: "[商品情報フラグ25]体外診断用医薬品【薬機法】"
+      goodsInfoFlg26:
+        type: "boolean"
+        description: "[商品情報フラグ26]医療機器（クラスⅠ・Ⅱ）【薬機法】"
+      goodsInfoFlg27:
+        type: "boolean"
+        description: "[商品情報フラグ27]特定保守管理医療機器【薬機法】"
+      goodsInfoFlg28:
+        type: "boolean"
+        description: "[商品情報フラグ28]動物用医薬品（体外診断用医薬品含む）【薬機法】"
+      goodsInfoFlg29:
+        type: "boolean"
+        description: "[商品情報フラグ29]動物用医療機器(一般及び管理医療機器)【薬機法】"
+      ecoFlg:
+        type: "boolean"
+        description: "エコマークフラグ"
+      greenFlg:
+        type: "boolean"
+        description: "グリーンマークフラグ"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

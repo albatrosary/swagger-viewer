@@ -1,0 +1,15 @@
+{
+  "name": "swagger-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docs": "bootprint openapi swagger.yml dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootprint": "^1.0.2",
+    "bootprint-openapi": "^1.1.0"
+  }
+}
